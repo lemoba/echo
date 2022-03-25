@@ -41,7 +41,10 @@ class verifyCodeService
 
     public function checkVerifyCode($userCode)
     {
-        $relCode = strtolower($this->session->get('verifyCode'));
-        return $relCode == strtolower($userCode);
+        $verifyCode = $this->session->get('verifyCode');
+        if (!isset($verifyCode)) {
+            return false;
+        }
+        return strtolower($verifyCode) == strtolower($userCode);
     }
 }

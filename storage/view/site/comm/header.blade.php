@@ -1,4 +1,4 @@
-<header class="bg-light sticky-top" th:fragment="header" style="box-shadow: 5px 5px 5px #cfcccc;">
+<header class="bg-light sticky-top" style="box-shadow: 5px 5px 5px #cfcccc;">
     <div class="container">
         <!-- 导航 -->
         <nav class="navbar navbar-expand-lg navbar-dark">
@@ -21,27 +21,32 @@
                             <span class="badge badge-danger" th:text="${allUnreadCount!=0 ? allUnreadCount : ''}"></span>
                         </a>
                     </li>
+                    @if(!$isLogin)
                     <li class="nav-item ml-3 btn-group-vertical">
-                        <a class="nav-link" href="/register">注册</a>
+                        <a class="nav-link" href="/user/register">注册</a>
                     </li>
                     <li class="nav-item ml-3 btn-group-vertical">
-                        <a class="nav-link" href="/login">登录</a>
+                        <a class="nav-link" href="/user/login">登录</a>
                     </li>
-                    <li class="nav-item ml-3 btn-group-vertical dropdown" th:if="${loginUser != null}">
+                    @endif
+
+                    @if($isLogin)
+                    <li class="nav-item ml-3 btn-group-vertical dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:30px;"/>
+                            <img src="{{$avatar}}" class="rounded-circle" style="width:30px;"/>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}"><i class="bi bi-person-fill"></i> 个人主页</a>
                             <a class="dropdown-item text-center" th:href="@{/user/setting}"><i class="bi bi-gear"></i> 账号设置</a>
                             <a class="dropdown-item text-center" th:href="@{/data}" sec:authorize="hasAnyAuthority('admin')"><i class="bi bi-clipboard-data"></i> 数据统计</a>
-                            <a class="dropdown-item text-center" th:href="@{/logout}"><i class="bi bi-box-arrow-right"></i> 退出登录</a>
+                            <a class="dropdown-item text-center" href="#" onclick="logout('/user/logout')"><i class="bi bi-box-arrow-right"></i> 退出登录</a>
                             <div class="dropdown-divider"></div>
                             <span class="dropdown-item text-center text-secondary" th:utext="${loginUser.username}"></span>
                         </div>
                     </li>
+                    @endif
                     <li class="nav-item ml-3 btn-group-vertical">
-                        <a class="nav-link" href="https://ylaila.com">🔥 CS-WiKi</a>
+                    <a class="nav-link" href="https://ylaila.com">🔥 CS-WiKi</a>
                     </li>
                 </ul>
                 <!-- 搜索 -->

@@ -4599,7 +4599,7 @@
     return line;
   }
 
-  // Helper for deleting text near the selection(s), used to implement
+  // Helpers for deleting text near the selection(s), used to implement
   // backspace, delete, and similar functionality.
   function deleteNearSelection(cm, compute) {
     var ranges = cm.doc.sel.ranges, kill = [];
@@ -7027,7 +7027,7 @@
       }
       this.lines.splice(at, n);
     },
-    // Helper used to collapse a small branch into a single leaf.
+    // Helpers used to collapse a small branch into a single leaf.
     collapse: function(lines) {
       lines.push.apply(lines, this.lines);
     },

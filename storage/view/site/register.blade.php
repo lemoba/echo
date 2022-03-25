@@ -22,10 +22,10 @@
 					<div class="form-group row">
 						<label for="username" class="col-sm-2 col-form-label text-right">账号:</label>
 						<div class="col-sm-10">
-							<input type="text" id="username"
+							<input type="text" id="email"
 								   class="form-control"
-								   value="admin@admin.com"
-								   name = "username" placeholder="请输入您的账号!" required>
+								   value=""
+								   placeholder="请输入邮箱" required>
 							<!--错误提示消息, 当 上面的 input class = is-invalid 时显示-->
 							<div class="invalid-feedback" text="${usernameMsg}"></div>
 						</div>
@@ -35,8 +35,8 @@
 						<div class="col-sm-10">
 							<input type="password" id="password"
 								   class="form-control"
-								   value="admin"
-								   name = "password" placeholder="请输入您的密码!" required>
+								   value=""
+								   placeholder="请输入密码" required>
 							<!--错误提示消息-->
 							<div class="invalid-feedback" text=""></div>
 						</div>
@@ -46,7 +46,7 @@
 						<label for="code" class="col-sm-2 col-form-label text-right">验证码:</label>
 						<div class="col-sm-6">
 							<input type="text" class="form-control"
-								   id="code" name="code" placeholder="请输入验证码!">
+								   id="code" placeholder="请输入验证码">
 							<div class="invalid-feedback" text="${codeMsg}"></div>
 						</div>
 						<div class="col-sm-4">
@@ -57,7 +57,7 @@
 					<div class="form-group row mt-4">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-10 text-center">
-							<button type="submit" class="btn btn-info text-white form-control">立即注册</button>
+							<button id="submit" class="btn btn-info text-white form-control">立即注册</button>
 						</div>
 					</div>
 				</div>
@@ -76,7 +76,50 @@
 	<script src="/static/js/reset-pwd.js"></script>
 	<script src="/static/layer/layer.js"></script>
 	<script>
-		layer.msg('hello');
+		$('#submit').click(function () {
+			var email = $("#email").val();
+			var password = $("#password").val();
+			var code = $("#code").val();
+			if (email == '') {
+				layer.msg("邮箱不能为空");
+				return
+			}
+			if (password == '') {
+				layer.msg("密码不能为空");
+				return
+			}
+
+			if (code == '') {
+				layer.msg("验证不能为空");
+				return
+			}
+
+			$.ajax({
+				url: '/user/doRegister',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					email: email,
+					password: password,
+					code: code,
+				},
+				success:function (res) {
+					if (res.code == 200) {
+						layer.msg('注册成功')
+						localStorage.setItem('user', JSON.stringify(res.data));
+						window.setTimeout(function() {
+							window.location.href="/"
+						},2000);
+					}else if (res.code == 403 || res.code == 404) {
+						layer.msg(res.msg) // 账号已存在
+						refresh_kaptcha();
+					}else {
+						layer.msg('未知错误，请稍后重试')
+						refresh_kaptcha();
+					}
+				}
+			})
+		})
 	</script>
 </body>
 </html>

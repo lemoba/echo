@@ -11,12 +11,35 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use function Hyperf\ViewEngine\view;
 
+/**
+ * @Controller()
+ */
 class IndexController extends AbstractController
 {
-    public function index()
+    /**
+     * @GetMapping(path="/")
+     * @return \Hyperf\ViewEngine\Contract\FactoryInterface|\Hyperf\ViewEngine\Contract\ViewInterface
+     */
+    public function index(RequestInterface $request)
     {
-        return view('index');
+        $token = $request->cookie('token');
+        $username = $request->cookie('username');
+        $avatar = $request->cookie('header_url');
+        $isLogin = false;
+
+        if ($token !== 'null' && $username !== 'null' && $avatar !== 'null') {
+            $isLogin = true;
+        }
+        return view('index', [
+            'token' => $token,
+            'username' => $username,
+            'avatar' => $avatar,
+            'isLogin' => $isLogin
+        ]);
     }
 }

@@ -136,5 +136,34 @@
 	<script src="/static/js/bootstrap.min.js"></script>
 	<script src="/static/js/global.js"></script>
 	<script src="/static/js/index.js"></script>
+	<script src="/static/js/jq.cookies.min.js"></script>
+	<script src="/static/layer/layer.js"></script>
+	<script>
+		console.log($.cookie('token'))
+		function logout($method)
+		{
+			$.ajax({
+				url: $method,
+				type: 'post',
+				dataType: 'json',
+				data: {
+					token: $.cookie('token')
+				},
+				success:function (res) {
+					if (res.code == 200) {
+						$.cookie('token', null, { path: '/' })
+						$.cookie('username', null, { path: '/' })
+						$.cookie('header_url', null, { path: '/' })
+						layer.msg('退出成功')
+					}else {
+						layer.msg('未知错误')
+					}
+					window.setTimeout(function() {
+						window.location.href="/"
+					},2000);
+				}
+			})
+		}
+	</script>
 </body>
 </html>
