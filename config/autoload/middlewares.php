@@ -10,11 +10,8 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-use App\Middleware\AuthMiddleware;
-
 return [
     'http' => [
         Hyperf\Session\Middleware\SessionMiddleware::class,
-        AuthMiddleware::class
     ],
 ];

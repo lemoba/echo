@@ -19,6 +19,6 @@ return [
         'gc_maxlifetime' => 1200,
         'session_name' => 'ECHO_SESSION_ID',
         'domain' => null,
-        'cookie_lifetime' => 5 * 60 * 60,
+        'cookie_lifetime' => 60 * 60 * 60,
     ],
 ];

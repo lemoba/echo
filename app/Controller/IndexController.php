@@ -11,9 +11,13 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\HttpServer\Contract\ResponseInterface;
+use Qbhy\HyperfAuth\Annotation\Auth;
+use Qbhy\HyperfAuth\AuthManager;
 use function Hyperf\ViewEngine\view;
 
 /**
@@ -22,24 +26,20 @@ use function Hyperf\ViewEngine\view;
 class IndexController extends AbstractController
 {
     /**
+     * @Inject()
+     * @var AuthManager
+     */
+    protected $auth;
+
+    /**
      * @GetMapping(path="/")
      * @return \Hyperf\ViewEngine\Contract\FactoryInterface|\Hyperf\ViewEngine\Contract\ViewInterface
      */
-    public function index(RequestInterface $request)
+    public function index()
     {
-        $token = $request->cookie('token');
-        $username = $request->cookie('username');
-        $avatar = $request->cookie('header_url');
-        $isLogin = false;
-
-        if ($token !== 'null' && $username !== 'null' && $avatar !== 'null') {
-            $isLogin = true;
+        if ($this->auth->guard('session')->check()) {
+            $user = $this->auth->guard('session')->user();
         }
-        return view('index', [
-            'token' => $token,
-            'username' => $username,
-            'avatar' => $avatar,
-            'isLogin' => $isLogin
-        ]);
+        return view('index', ['user' => $user]);
     }
 }

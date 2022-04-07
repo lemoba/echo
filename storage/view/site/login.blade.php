@@ -39,8 +39,6 @@
 						<div class="col-sm-6">
 							<input type="text" class="form-control"
 								   id="code" name="code" placeholder="请输入验证码">
-							<input type="hidden" class="form-control"
-								   id="token" value="{{$Token}}">
 						</div>
 						<div class="col-sm-4">
 							<img src="/kaptcha" id = "kaptcha"  style="width:100px;height:40px;" class="mr-2"/>
@@ -81,10 +79,7 @@
 			var email = $("#email").val();
 			var password = $("#password").val();
 			var code = $("#code").val();
-			var token = $("#token").val();
 
-
-			console.log(token)
 			var rememberMe = 0;
 			var expire = 0.2
 			if ($("#rememberMe").is(':checked')) {
@@ -114,20 +109,10 @@
 					password: password,
 					code: code,
 					rememberMe: rememberMe,
-					token: token
 				},
 				success:function (res) {
 					if (res.code == 200) {
 						layer.msg('登录成功')
-						console.log(res.data)
-						var options = {
-							expires: expire,
-							path: '/'
-						}
-						$.cookie('token', res.data.token+'_'+res.data.email, options)
-						$.cookie('username', res.data.username, options)
-						$.cookie('header_url', res.data.header_url, options)
-
 						window.setTimeout(function() {
 							window.location.href="/"
 						},2000);

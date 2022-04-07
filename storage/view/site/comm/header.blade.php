@@ -15,13 +15,13 @@
                             <i class="bi bi-house"></i> 首页
                         </a>
                     </li>
-                    <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser != null}">
-                        <a class="nav-link position-relative" th:href="@{/letter/list}">
+                    <li class="nav-item ml-3 btn-group-vertical">
+                        <a class="nav-link position-relative">
                             <i class="bi bi-envelope"></i> 消息
-                            <span class="badge badge-danger" th:text="${allUnreadCount!=0 ? allUnreadCount : ''}"></span>
+                            <span class="badge badge-danger"></span>
                         </a>
                     </li>
-                    @if(!$isLogin)
+                    @if(!auth('session')->check())
                     <li class="nav-item ml-3 btn-group-vertical">
                         <a class="nav-link" href="/user/register">注册</a>
                     </li>
@@ -29,11 +29,10 @@
                         <a class="nav-link" href="/user/login">登录</a>
                     </li>
                     @endif
-
-                    @if($isLogin)
+                    @if(auth('session')->check())
                     <li class="nav-item ml-3 btn-group-vertical dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{$avatar}}" class="rounded-circle" style="width:30px;"/>
+                            <img src="{{auth('session')->user()->avatar}}" class="rounded-circle" style="width:30px;"/>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}"><i class="bi bi-person-fill"></i> 个人主页</a>

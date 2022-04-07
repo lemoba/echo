@@ -106,9 +106,8 @@
 				success:function (res) {
 					if (res.code == 200) {
 						layer.msg('注册成功')
-						localStorage.setItem('user', JSON.stringify(res.data));
 						window.setTimeout(function() {
-							window.location.href="/"
+							window.location.href="/user/login"
 						},2000);
 					}else if (res.code == 403 || res.code == 404) {
 						layer.msg(res.msg) // 账号已存在

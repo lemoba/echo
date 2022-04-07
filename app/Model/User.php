@@ -4,6 +4,8 @@ declare (strict_types=1);
 namespace App\Model;
 
 use Hyperf\DbConnection\Model\Model;
+use Qbhy\HyperfAuth\Authenticatable;
+
 /**
  * @property int $id 
  * @property string $username 
@@ -13,17 +15,17 @@ use Hyperf\DbConnection\Model\Model;
  * @property int $type 
  * @property int $status 
  * @property string $activation_code 
- * @property string $header_url 
+ * @property string $avatar
  * @property string $create_time 
  */
-class User extends Model
+class User extends Model implements Authenticatable
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'User';
+    protected $table = 'user';
     /**
      * The attributes that are mass assignable.
      *
@@ -31,7 +33,7 @@ class User extends Model
      */
     protected $fillable = [
         'username',
-        'eamil',
+        'email',
         'password',
         'head_url'
     ];
@@ -42,4 +44,15 @@ class User extends Model
      * @var array
      */
     protected $casts = ['id' => 'integer', 'type' => 'integer', 'status' => 'integer'];
+
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public static function retrieveById($key): ?Authenticatable
+    {
+        return self::query()->select('username', 'id', 'avatar')->find($key);
+    }
 }
